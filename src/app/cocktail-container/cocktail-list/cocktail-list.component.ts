@@ -14,7 +14,6 @@ export class CocktailListComponent {
     @Output() private changeCocktail: EventEmitter<number> = new EventEmitter<number>();
 
     public selectCocktail(index: number): void {
-        console.log(index)
         this.changeCocktail.emit(index);
     }
 }
