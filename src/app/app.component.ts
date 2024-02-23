@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {HeaderComponent} from "./header/header.component";
-import {Cocktail} from "./interface/cocktail.interface";
+import {Cocktail} from "./shared/interfaces/cocktail.interface";
 import {CocktailDetailComponent} from "./cocktail-container/cocktail-detail/cocktail-detail.component";
 import {CocktailListComponent} from "./cocktail-container/cocktail-list/cocktail-list.component";
 import {CocktailContainerComponent} from "./cocktail-container/cocktail-container.component";
