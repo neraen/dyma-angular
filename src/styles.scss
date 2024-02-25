@@ -166,3 +166,12 @@ body {
   }
 }
 
+.badge{
+    background-color: var(--secondary);
+    border-radius: 3px;
+    padding: 2px 5px;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+}
+
