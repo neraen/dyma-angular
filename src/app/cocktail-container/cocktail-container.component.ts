@@ -4,14 +4,16 @@ import {CocktailDetailComponent} from "./cocktail-detail/cocktail-detail.compone
 import {Cocktail} from "../shared/interfaces/cocktail.interface";
 import {CocktailService} from "../shared/services/cocktail.service";
 import {Subscription} from "rxjs";
+import {RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-cocktail-container',
   standalone: true,
-  imports: [
-    CocktailListComponent,
-    CocktailDetailComponent
-  ],
+    imports: [
+        CocktailListComponent,
+        CocktailDetailComponent,
+        RouterOutlet
+    ],
   templateUrl: './cocktail-container.component.html',
   styleUrl: './cocktail-container.component.scss'
 })

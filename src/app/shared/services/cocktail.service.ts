@@ -72,5 +72,9 @@ export class CocktailService {
     selectCocktail(index: number) {
         this.selectedCocktail$.next(this.cocktails$.value[index]);
     }
+
+    public getCocktail(index: number): Cocktail{
+        return this.cocktails$.value[index];
+    }
   constructor() { }
 }
