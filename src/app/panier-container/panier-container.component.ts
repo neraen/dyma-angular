@@ -15,7 +15,7 @@ import {Subscription} from "rxjs";
 })
 export class PanierContainerComponent implements OnInit, OnDestroy {
     public ingredients: Ingredient[] = [];
-    public subscription: Subscription = new Subscription()
+    public subscription: Subscription = new Subscription();
     constructor(private panierService: PanierService){
 
     }

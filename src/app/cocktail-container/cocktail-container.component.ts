@@ -30,17 +30,9 @@ export class CocktailContainerComponent implements OnInit, OnDestroy {
         this.subscription.add(this.cocktailService.cocktails$.subscribe((cocktails: Cocktail[]) => {
             this.cocktails = cocktails;
         }));
-
-        this.subscription.add(this.cocktailService.selectedCocktail$.subscribe((cocktail: Cocktail) => {
-            this.selectedCocktail = cocktail;
-        }));
     }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-    }
-
-    selectCocktail(index: number) {
-        this.cocktailService.selectCocktail(index);
     }
 }

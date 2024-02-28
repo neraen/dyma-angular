@@ -67,12 +67,6 @@ export class CocktailService {
         }
     ]);
 
-    public selectedCocktail$: BehaviorSubject<Cocktail> = new BehaviorSubject<Cocktail>(this.cocktails$.value[0]);
-
-    selectCocktail(index: number) {
-        this.selectedCocktail$.next(this.cocktails$.value[index]);
-    }
-
     public getCocktail(index: number): Cocktail{
         return this.cocktails$.value[index];
     }

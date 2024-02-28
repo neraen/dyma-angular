@@ -12,7 +12,7 @@ export class PanierService {
     addToPanier(ingredients: Ingredient[]): void {
     const currentValue = this.ingredients$.value;
     if(currentValue){
-        const ingredientsUpdated = [...currentValue, ...ingredients].reduce((acc, ingredient) => {
+        const ingredientsUpdated = [...currentValue, ...ingredients].reduce((acc: {[x: string]: number}, ingredient: Ingredient) => {
             if(acc[ingredient.name]){
                 acc[ingredient.name] += ingredient.quantity;
             }else {
