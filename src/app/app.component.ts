@@ -5,11 +5,12 @@ import {Cocktail} from "./shared/interfaces/cocktail.interface";
 import {CocktailDetailComponent} from "./cocktail-container/cocktail-detail/cocktail-detail.component";
 import {CocktailListComponent} from "./cocktail-container/cocktail-list/cocktail-list.component";
 import {CocktailContainerComponent} from "./cocktail-container/cocktail-container.component";
+import {HttpClientModule} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, CocktailDetailComponent, CocktailListComponent, CocktailContainerComponent],
+  imports: [RouterOutlet, HttpClientModule, HeaderComponent, CocktailDetailComponent, CocktailListComponent, CocktailContainerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

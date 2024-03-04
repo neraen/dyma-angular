@@ -3,8 +3,9 @@ import {CocktailListComponent} from "./cocktail-list/cocktail-list.component";
 import {CocktailDetailComponent} from "./cocktail-detail/cocktail-detail.component";
 import {Cocktail} from "../shared/interfaces/cocktail.interface";
 import {CocktailService} from "../shared/services/cocktail.service";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {RouterOutlet} from "@angular/router";
+import {AsyncPipe} from "@angular/common";
 
 @Component({
   selector: 'app-cocktail-container',
@@ -12,27 +13,13 @@ import {RouterOutlet} from "@angular/router";
     imports: [
         CocktailListComponent,
         CocktailDetailComponent,
-        RouterOutlet
+        RouterOutlet,
+        AsyncPipe
     ],
   templateUrl: './cocktail-container.component.html',
   styleUrl: './cocktail-container.component.scss'
 })
-export class CocktailContainerComponent implements OnInit, OnDestroy {
-    public cocktails: Cocktail[] = [];
-
-    public selectedCocktail: Cocktail = {} as Cocktail;
-
-    public subscription: Subscription = new Subscription();
-
+export class CocktailContainerComponent {
+    public cocktails$: Observable<Cocktail[]> = this.cocktailService.cocktails$;
     constructor(private cocktailService: CocktailService) {}
-
-    ngOnInit() {
-        this.subscription.add(this.cocktailService.cocktails$.subscribe((cocktails: Cocktail[]) => {
-            this.cocktails = cocktails;
-        }));
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
 }
