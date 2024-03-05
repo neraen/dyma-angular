@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, filter, first, map, Observable, tap} from "rxjs";
 import {Cocktail} from "../interfaces/cocktail.interface";
 import {HttpClient} from "@angular/common/http";
 
@@ -10,8 +10,18 @@ export class CocktailService {
 
     public cocktails$: BehaviorSubject<Cocktail[]> = new BehaviorSubject<Cocktail[]>([]);
 
-    public getCocktail(index: number): Cocktail{
-        return this.cocktails$.value[index];
+    constructor(private httpClient: HttpClient) {
+
+       // this.seed();
+    }
+    public getCocktail(index: number): Observable<Cocktail>{
+       return this.cocktails$.pipe(
+           filter((cocktails: Cocktail[]) => cocktails !== null),
+           first(),
+           map((cocktails: Cocktail[]) => {
+               return cocktails[index];
+           })
+       )
     }
 
     public addCocktail(cocktail: Cocktail): void {
@@ -31,29 +41,40 @@ export class CocktailService {
             }
         }))
     }
-  constructor(private httpClient: HttpClient) {
-        this.seed();
-  }
+
+    public fetchCocktails(): Observable<Cocktail[]>{
+        return this.httpClient.get('https://restapi.fr/api/cocktails').pipe(
+            tap((cocktails: Cocktail[]) => {
+                this.cocktails$.next(cocktails);
+            })
+        )
+    }
+
 
     public seed(){
-        this.httpClient.post('https://restapi.fr/api/cocktails',  {
-            name: 'Mojito',
-            img: 'https://www.thecocktaildb.com/images/media/drink/3z6xdi1589574603.jpg',
-            description: 'A Mojito is a traditional Cuban highball. Traditionally, a mojito is a cocktail that consists of five ingredients: white rum, sugar, lime juice, soda water, and mint.',
-            ingredients: [
-                {
-                    name: 'Menthe',
-                    quantity: 2
-                },
-                {
-                    name: 'Perrier',
-                    quantity: 1
-                },
-                {
-                    name: 'Rhum',
-                    quantity: 3
-                }
-            ]
-        })
+        this.httpClient.get<Cocktail[] | []>('https://restapi.fr/api/cocktails')
+                       .subscribe((cocktails: Cocktail[] | []) => {
+                            if(!cocktails.length) {
+                                this.httpClient.post('https://restapi.fr/api/cocktails', {
+                                    name: 'Mojito',
+                                    img: 'https://www.thecocktaildb.com/images/media/drink/3z6xdi1589574603.jpg',
+                                    description: 'A Mojito is a traditional Cuban highball. Traditionally, a mojito is a cocktail that consists of five ingredients: white rum, sugar, lime juice, soda water, and mint.',
+                                    ingredients: [
+                                        {
+                                            name: 'Menthe',
+                                            quantity: 2
+                                        },
+                                        {
+                                            name: 'Perrier',
+                                            quantity: 1
+                                        },
+                                        {
+                                            name: 'Rhum',
+                                            quantity: 3
+                                        }]}
+                                 ).subscribe();
+                            }
+                       })
     }
 }
+
