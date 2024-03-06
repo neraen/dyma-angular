@@ -5,6 +5,7 @@ import {ActivatedRoute, ParamMap, Router, RouterLink} from "@angular/router";
 import {CocktailService} from "../../shared/services/cocktail.service";
 import {Cocktail} from "../../shared/interfaces/cocktail.interface";
 import {Ingredient} from "../../shared/interfaces/ingredient.interface";
+import {first} from "rxjs";
 
 
 @Component({
@@ -15,8 +16,8 @@ import {Ingredient} from "../../shared/interfaces/ingredient.interface";
   styleUrl: './cocktail-form.component.scss'
 })
 export class CocktailFormComponent implements OnInit{
-    public cocktailForm: FormGroup;
-    public cocktail: Cocktail;
+    public cocktailForm!: FormGroup;
+    public cocktail?: Cocktail;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -29,17 +30,22 @@ export class CocktailFormComponent implements OnInit{
         this.activatedRoute.paramMap.subscribe((paramMap: ParamMap) => {
             const index = paramMap.get('index');
             if(index !== null){
-                this.cocktailService.getCocktail(+index).subscribe((cocktail:Cocktail) => {
-                    this.cocktail = cocktail;
+                this.cocktailService.getCocktail(+index)
+                    .pipe(first(x => !!x))
+                    .subscribe((cocktail:Cocktail) => {
+                        this.cocktail = cocktail;
+                        this.cocktailForm = this.initForm(this.cocktail);
                 })
+            } else {
+                this.cocktailForm = this.initForm();
             }
         })
 
        this.initForm(this.cocktail);
     }
 
-    private initForm(cocktail: Cocktail = {name: '', description: '', img: '', ingredients: []}): void {
-        this.cocktailForm = this.formBuilder.group({
+    private initForm(cocktail: Cocktail = {name: '', description: '', img: '', ingredients: []}): FormGroup {
+        return this.formBuilder.group({
             name: [cocktail.name, Validators.required],
             img: [cocktail.img, Validators.required],
             description: [cocktail.description, Validators.required],
@@ -64,9 +70,9 @@ export class CocktailFormComponent implements OnInit{
     public submit(): void {
         console.log(this.cocktailForm);
         if(this.cocktail){
-            this.cocktailService.editCocktail(this.cocktailForm.value)
+            this.cocktailService.editCocktail(this.cocktail._id, this.cocktailForm.value)
         } else {
-            this.cocktailService.addCocktail(this.cocktailForm.value);
+            this.cocktailService.addCocktail(this.cocktailForm.value).subscribe();
         }
         this.router.navigate(['..'], {relativeTo: this.activatedRoute})
     }

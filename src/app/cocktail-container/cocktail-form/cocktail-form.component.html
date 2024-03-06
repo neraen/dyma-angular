@@ -1,4 +1,4 @@
-<form  [formGroup]="cocktailForm" (ngSubmit)="submit()">
+<form  *ngIf="cocktailForm" [formGroup]="cocktailForm" (ngSubmit)="submit()">
     <div class="form-group d-flex flex-column">
         <label>Nom</label>
         <input formControlName="name" type="text">

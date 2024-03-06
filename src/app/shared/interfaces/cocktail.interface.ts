@@ -5,4 +5,6 @@ export interface Cocktail {
   img: string;
   description: string;
   ingredients?: Ingredient[];
+
+  _id?: string;
 }
