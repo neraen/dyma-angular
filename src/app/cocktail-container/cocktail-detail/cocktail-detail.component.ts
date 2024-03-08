@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Cocktail} from "../../shared/interfaces/cocktail.interface";
 import {CommonModule} from "@angular/common";
 import {PanierService} from "../../shared/services/panier.service";
